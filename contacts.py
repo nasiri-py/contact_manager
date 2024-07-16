@@ -85,3 +85,52 @@ class ContactManager:
             return ContactManager.get_input(message, force)
         return value if value else None
     
+    def menu(self):
+        console.print("[magenta]Contact Manager[/magenta]", style="bold")
+        console.print("1. Add Contact")
+        console.print("2. Remove Contact")
+        console.print("3. Update Contact")
+        console.print("4. List Contact")
+        console.print("5. Search Contact")
+        console.print("6. Exit")
+        choice = int(self.get_input("Enter your choice: ", force=True))
+        if choice == 1:
+            name = self.get_input("Enter name: ", force=True)
+            phone = self.get_input("Enter phone: ", force=True)
+            email = self.get_input("Enter email (Optional): ")
+            address = self.get_input("Enter address (Optional): ")
+            self.add_contact(name, phone, email, address)
+            self.goto_menu()
+        elif choice == 2:
+            name = self.get_input("Enter name: ", force=True)
+            self.remove_contact(name)
+            self.goto_menu()
+        elif choice == 3:
+            name = self.get_input("Enter name: ", force=True)
+            self.update_contact(name)
+            self.goto_menu()
+        elif choice == 4:
+            self.list_contacts()
+            self.goto_menu()
+        elif choice == 5:
+            query = self.get_input("Enter query: ", force=True)
+            self.search_contact(query)
+            self.goto_menu()
+        elif choice == 6:
+            console.print("[green]GoodBye![/green]", end="\n\n", style="bold")
+            exit()
+        else:
+            console.print('[red]Inmvalid input![/red]', end="\n\n", style="bold")
+            self.goto_menu()
+
+    def goto_menu(self):
+        goto = self.get_input("Enter 'q' to exit or any other key to go to menu: ")
+        if goto == "q":
+            exit()
+        else:
+            self.menu()
+
+
+contact_manager = ContactManager()
+contact_manager.menu()
+    
