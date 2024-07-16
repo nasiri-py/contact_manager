@@ -40,7 +40,7 @@ class ContactManager:
             phone = self.get_input("Enter phone: ", force=True)
             email = self.get_input("Enter email (Optional): ")
             address = self.get_input("Enter address (Optional): ")
-            self.contact[name] = {
+            self.contacts[name] = {
                 'phone': phone,
                 'email': email,
                 'address': address
@@ -48,6 +48,19 @@ class ContactManager:
             console.print(f"[green]{name} has been updated successfully.[/green]", end="\n\n", style="bold")
         else:
             console.print(f"[yellow]{name} not found.[/yellow]", style="bold")
+
+    def search_contact(self, query):
+        finds = []
+        for key in self.contacts:
+            if query in key:
+                finds.append(key)
+        
+        if finds:
+            for name in finds:
+                console.print(f"[green]{name} : [/green]({self.contact[name]['phone']}) - ({self.contact[name]['email']}) - ({self.contact[name]['address']})", style="bold")
+        else:
+            console.print(f"[yellow]No contact found.[/yellow]", style="bold")
+        console.print('', end="\n\n")
 
     @staticmethod
     def get_input(message, force=False):
