@@ -33,4 +33,26 @@ class ContactManager:
             i += 1
         else:
             console.print(f"[yellow]Contact list is empty.[/yellow]", style="bold")
+        console.print('', end="\n\n")
+
+    def update_contact(self, name):
+        if name in self.contacts:
+            phone = self.get_input("Enter phone: ", force=True)
+            email = self.get_input("Enter email (Optional): ")
+            address = self.get_input("Enter address (Optional): ")
+            self.contact[name] = {
+                'phone': phone,
+                'email': email,
+                'address': address
+            }
+            console.print(f"[green]{name} has been updated successfully.[/green]", end="\n\n", style="bold")
+        else:
+            console.print(f"[yellow]{name} not found.[/yellow]", style="bold")
+
+    @staticmethod
+    def get_input(message, force=False):
+        value = input(message)
+        if force and not value:
+            return ContactManager.get_input(message, force)
+        return value if value else None
     
