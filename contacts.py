@@ -1,4 +1,5 @@
 from rich.console import Console
+import json
 
 console = Console()
 
@@ -7,7 +8,19 @@ class ContactManager:
 
     def __init__(self):
         self.contacts = {}
+        try:
+            self.load_contact()
+        except FileNotFoundError:
+            self.save_contact()
 
+    def save_contact(self):
+        with open("contacts.json", "w") as f:
+            f.write(json.dumps(self.contact))
+
+    def load_contact(self):
+        with open("contacts.json", "r") as f:
+            self.contact = json.loads(f.read())
+        
     def add_contact(self, name, phone, email=None, address=None):
         if name in self.contacts:
             console.print(f"[yellow]{name} is already in the contact list.[/yellow]", end="\n\n", style="bold")
@@ -17,11 +30,13 @@ class ContactManager:
             'email': email,
             'address': address
         }
+        self.save_contact()
         console.print(f"[green]{name} has been added to the contact list.[/green]", end="\n\n", style="bold")
 
     def remove_contact(self, name):
         if name in self.contacts:
             del self.contacts[name]
+            self.save_contact()
             console.print(f"[red]{name} has been removed from the contact list.[/red]", end="\n\n", style="bold")
         else:
             console.print(f"[yellow]{name} is not in the contact list.[/yellow]", end="\n\n", style="bold")
@@ -45,6 +60,7 @@ class ContactManager:
                 'email': email,
                 'address': address
             }
+            self.save_contact()
             console.print(f"[green]{name} has been updated successfully.[/green]", end="\n\n", style="bold")
         else:
             console.print(f"[yellow]{name} not found.[/yellow]", style="bold")
